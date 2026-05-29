@@ -16,7 +16,19 @@
     <button onclick="
         play('scissor');
     ">Scissor</button>
+    <button onclick="
+    score.wins=0;
+    score.losses=0;
+    score.ties=0;
+    localStorage.setItem('score', JSON.stringify(score));"
+    >Reset Score</button>
     <script>
+        let score=JSON.parse(localStorage.getItem('score')) || {
+            wins:0,
+            losses:0,
+            ties:0
+        };
+
         function play(playerchoice){
             const computerchoice = getcomputerchoice();
             let res='';
@@ -45,7 +57,17 @@
                     res='tie';
                 }
             }
-            alert(`you chose ${playerchoice}.Computer chose ${computerchoice}. ${res}`);
+
+            if(res==='you win'){
+                score.wins++;
+            }else if(res==='you lose'){
+                score.losses++;
+            }else if(res==='tie'){
+                score.ties++;
+            }
+            localStorage.setItem('score', JSON.stringify(score));
+            alert(`you chose ${playerchoice}.Computer chose ${computerchoice}. ${res}
+            Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`);
         }
 
         function getcomputerchoice(){
