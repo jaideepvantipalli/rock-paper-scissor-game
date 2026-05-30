@@ -5,6 +5,44 @@ let score=JSON.parse(localStorage.getItem('score')) || {
 };
 updatescore();
 
+let isAutoPlaying=false;
+let intervalId;
+
+function Autoplay(){
+    if(!isAutoPlaying){
+        intervalId = setInterval(() => {
+            const playerchoice = getcomputerchoice();
+            play(playerchoice);
+        }, 1000);
+        isAutoPlaying=true;
+    }else{
+        clearInterval(intervalId);
+        isAutoPlaying=false;
+    }
+}
+
+document.querySelector('.js-rock-button').addEventListener('click', () => {
+    play('rock');
+});
+
+document.querySelector('.js-paper-button').addEventListener('click', () => {
+    play('paper');
+});
+
+document.querySelector('.js-scissors-button').addEventListener('click', () => {
+    play('scissors');
+});
+
+document.body.addEventListener('keydown', (event) =>{
+    if(event.key === 'r'){
+        play('rock');
+    }else if(event.key === 'p'){
+        play('paper');
+    }else if(event.key === 's'){
+        play('scissors');
+    }
+});
+
 function play(playerchoice){
     const computerchoice = getcomputerchoice();
     let res='';
